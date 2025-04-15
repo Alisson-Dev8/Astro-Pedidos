@@ -1,14 +1,11 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
-//import api from '../../services/api';
-
-//import CardMovies from "../../components/card-movies";
 import { Input } from "../../components/input/input";
 
+type RequestType = "Adicionar" | "Erro de Reprodução";
+type MediaType = "Filmes" | "Series";
 
-//const API_KEY = "aefaf9ef817814bdb8421b06c38b6421";
-//const API_URL = "https://api.themoviedb.org/3/search/movie";
 
 /*interface MovieFormProps {
     search: string;
@@ -21,43 +18,30 @@ import { Input } from "../../components/input/input";
     id: number;
 }*/
 
+
+
 export default function MovieForm() {
     const [search, setSearch] = useState<string>("");
-    const [selectedRequest, setSelectedRequest] = useState<string>("Adicionar")
-    const [selectedMovieOrSeries, setSelectedMovieOrSeries] = useState<string>("Filmes");
+    const [selectedRequest, setSelectedRequest] = useState<RequestType>("Adicionar")
+    const [selectedMovieOrSeries, setSelectedMovieOrSeries] = useState<MediaType>("Filmes");
     const [observationInput, setObservationInput] = useState<string>("");
+    
 
     const navigate = useNavigate();
 
     const searchMovies = (e: FormEvent) => {
         e.preventDefault();
-        navigate(`/filmes?search=${search}`)
+
+
+        const mediaType = selectedMovieOrSeries === "Filmes" ? "Filmes" : "Series";
+        navigate(`/${mediaType}?search=${encodeURIComponent(search)}`)
 
     }
-
-  /*  const [movies, setMovies] = useState<Movie[]>([]);
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        async function loadFilmes() {
-            const response = await api.get(`${search}/movie/`, {
-                params: {
-                    api_key: API_KEY,
-                    language: "pt-BR",
-                    page: 1,
-                }
-            })
-            setMovies(response.data.results)
-            navigate(`/filmes?search=${search}`)
-            //console.log(response.data.results)
-        }
-        loadFilmes()
-    }, [])*/
 
     return (
         <div className="bg-gray-800  max-w-lg p-6 shadow-md rounded-lg mt-10 mb-40 mr-8 ml-8 md:mx-auto">
             <div className="flex justify-center">
-                <h2 className="text-xl text-zinc-300 font-semibold mb-4">Adicionar Filme ou Série</h2>
+                <h2 className="text-xl text-zinc-300 font-semibold mb-4">Adicionar Filmes ou Séries</h2>
             </div>
             <form className="space-y-4" onSubmit={searchMovies}>
                 <div>
@@ -75,7 +59,7 @@ export default function MovieForm() {
                     <label className="block text-sm text-zinc-300 font-medium mb-1">Solicitação Para:</label>
                     <select
                         value={selectedRequest}
-                        onChange={(e) => setSelectedRequest(e.target.value as "Adicionar" | "Erro de Reprodução")}
+                        onChange={(e) => setSelectedRequest(e.target.value as RequestType)}
                         className="w-full p-2 border rounded-md"
                         required
                     >
@@ -88,7 +72,7 @@ export default function MovieForm() {
                     <label className="block text-sm text-zinc-300 font-medium mb-1">Filmes ou Séries:</label>
                     <select
                         value={selectedMovieOrSeries}
-                        onChange={(e) => setSelectedMovieOrSeries(e.target.value as "Filmes" | "Series")}
+                        onChange={(e) => setSelectedMovieOrSeries(e.target.value as MediaType)}
                         className="w-full p-2 border rounded-md"
                         required
                     >
@@ -111,11 +95,7 @@ export default function MovieForm() {
                 <button
                     type="submit"
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-2 rounded-md">
-                    Buscar
-                   {/* {(movies.map((movie) => <CardMovies key={movie.id} movie={movie} />)
-                    )} : (
-                    <p className="text-center col-span-3">Nenhum resultado encontrado.</p>
-                    )*/}
+                        Buscar
                 </button >
             </form>
         </div>
@@ -141,3 +121,23 @@ export default function MovieForm() {
                         ) : (
                             <p className="text-center col-span-3">Nenhum resultado encontrado.</p>
                         )}*/
+
+
+/*  const [movies, setMovies] = useState<Movie[]>([]);
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function loadFilmes() {
+            const response = await api.get(`${search}/movie/`, {
+                params: {
+                    api_key: API_KEY,
+                    language: "pt-BR",
+                    page: 1,
+                }
+            })
+            setMovies(response.data.results)
+            navigate(`/filmes?search=${search}`)
+            //console.log(response.data.results)
+        }
+        loadFilmes()
+    }, [])*/                            
