@@ -16,7 +16,7 @@ export interface Movie {
     poster_path?: string;
     release_date?: string;
     first_air_date?: string;
-    primary_release_year: string;
+    primary_release_year?: string;
     overview?: string;
 }
 
@@ -46,12 +46,12 @@ const CardMovies: React.FC<CardMoviesProps> = ({ movie }) => {
                 parse_mode: "Markdown",
             })
             alert("Pedido enviado com sucesso via Telegram!");
-            setIsLoading(false)
+
         } catch (error) {
             console.error("Erro ao enviar para o Telegram:", error);
             alert("Erro ao enviar mensagem.");
         }
-
+        setIsLoading(false)
     };
     return (
         <div className="flex flex-row w-[550px] bg-slate-600 pt-10 pb-10 pl-6 pr-6 mt-4 shadow-lg rounded" key={movie.id}>
